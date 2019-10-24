@@ -60,28 +60,24 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
   <script>
-    const keys = document.querySelectorAll('.key');
-
     function getDrums(e) {
       const sound = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+      const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+
       if (!sound) return;
       sound.currentTime = 0;
       sound.play();
-
-      document.querySelector(`div[data-key="${e.keyCode}"]`).classList.add('playing');
+      key.classList.add('playing');
     }
 
     function removePlaying(e) {
-      const isPlaying = !!document.querySelector('.playing');
-
-      if (e.propertyName === 'transform' && isPlaying) {
-        document.querySelector('.playing').classList.remove('playing');
-      };
+      if (e.propertyName !== 'transform') return;    
+      e.target.classList.remove('playing');
     }
 
+    const keys = Array.from(document.querySelectorAll('.key'));
     document.addEventListener('keydown', getDrums);
-    document.addEventListener('transitionend', removePlaying);
-
+    keys.forEach(key => key.addEventListener('transitionend', removePlaying));
   </script>
 
 
